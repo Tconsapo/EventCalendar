@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package mainSource;
 
 import Data.Converter;
@@ -12,15 +7,15 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JList;
 
-
-
 public class DataWorker {
-    
-    
+      
     public static String getDir(MainFrame frame, int n){
         String s;
         s = frame.dates.get(n).getText() + "_"
@@ -28,13 +23,7 @@ public class DataWorker {
           + frame.yearLab.getText();
         return s;
     }
-    
-    /**
-     *
-     * @param frame
-     * @param b
-     * @return
-     */
+
     public static String getDir(MainFrame frame, JButton b){
         String s;
         s = b.getText() + "_"
@@ -42,25 +31,43 @@ public class DataWorker {
           + frame.yearLab.getText();
         return s;
     }
-    
-    /**
-     *
-     * @param list
-     * @param dir
-     */
-    public static void getEvents(JList<String> list, String dir){
+
+    public static void getEvents(ArrayList<String> list, String dir){
         File f = new File(dir);
         if (f.isDirectory()){
-            list.setListData(f.list());
+            list.clear();
+            Collections.addAll(list, f.list());
         }
     }
     
-    /**
-     *
-     * @param frame
-     * @param n
-     * @return
-     */
+    public static void setEvents(JList<String> list, ArrayList<String> listData){
+        String[] s = new String[listData.size()];
+        int i = 0;
+        for (String event: listData){
+            if (event.length() > 6){
+                StringBuilder sb = new StringBuilder();
+                sb.append(event);
+                sb.setCharAt(sb.length()-3,':');
+                sb.setCharAt(sb.length()-6,' ');
+                s[i] = sb.toString();
+                i++;
+            }
+        }
+        list.setListData(s);
+    }
+    
+    public static String getEvent(String text){
+        StringBuilder sb = new StringBuilder();
+        sb.append(text);
+        sb.setCharAt(sb.length()-3,'_');
+        sb.setCharAt(sb.length()-6,'_');
+        return sb.toString();
+    }
+    
+    public static String getName(String text){
+        return text.replaceAll("_", " ");
+    }
+    
     public static boolean isEventEx(MainFrame frame, int n){
         File f = new File(DataWorker.getDir(frame, n));
         if (f.isDirectory()){

@@ -2,16 +2,20 @@
 package Visual;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import mainSource.DataWorker;
 
 public class EventsFrame extends javax.swing.JFrame {
     
     private String dir;
+    private ArrayList eventsListData;
     
     public EventsFrame(String d) {
         initComponents();
         this.dir = d;
-        DataWorker.getEvents(this.eventsList, dir);
+        this.eventsListData = new ArrayList<String>();
+        //DataWorker.getEvents(this.eventsListData, dir);
+        //DataWorker.setEvents(this.eventsList, this.eventsListData);
         this.setVisible(true);
     }
 
@@ -88,12 +92,14 @@ public class EventsFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_newEventButtonClck
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        DataWorker.getEvents(this.eventsList, dir);
+        DataWorker.getEvents(this.eventsListData, dir);
+        DataWorker.setEvents(this.eventsList, this.eventsListData);
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void eventsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventsListValueChanged
-        String s = this.eventsList.getSelectedValue();
+        String s = this.eventsList.getSelectedValue();       
         if (s != null){
+            s = DataWorker.getEvent(s);
             this.eventsList.clearSelection();
             try {
                 new PersonsFrame(this.dir + "/" + s).setVisible(true);
@@ -104,7 +110,7 @@ public class EventsFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_eventsListValueChanged
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        this.setTitle("События " + this.dir);
+        this.setTitle("События " + DataWorker.getName(this.dir));
     }//GEN-LAST:event_formWindowOpened
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

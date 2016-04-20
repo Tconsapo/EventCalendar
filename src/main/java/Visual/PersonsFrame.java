@@ -401,6 +401,7 @@ public class PersonsFrame extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         SimpleDateFormat out = new SimpleDateFormat("HH:mm");
         this.setTitle("Участники " + this.e.eventName + " " + out.format(this.e.time));
+        this.personsList.grabFocus();
     }//GEN-LAST:event_formWindowOpened
 
     private void reNameDialogComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_reNameDialogComponentShown
