@@ -3,6 +3,8 @@ package Visual;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mainSource.DataWorker;
 
 public class EventsFrame extends javax.swing.JFrame {
@@ -94,6 +96,7 @@ public class EventsFrame extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         DataWorker.getEvents(this.eventsListData, dir);
         DataWorker.setEvents(this.eventsList, this.eventsListData);
+        this.eventsList.setEnabled(true);
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void eventsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventsListValueChanged
@@ -103,6 +106,7 @@ public class EventsFrame extends javax.swing.JFrame {
             this.eventsList.clearSelection();
             try {
                 new PersonsFrame(this.dir + "/" + s).setVisible(true);
+                this.eventsList.setEnabled(false);
             } catch (IOException ex) {
                 new Error("Ошибка чтения/записи файла!");
             }
