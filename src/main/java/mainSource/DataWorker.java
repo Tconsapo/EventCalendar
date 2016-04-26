@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import javax.swing.JButton;
@@ -81,13 +80,13 @@ public class DataWorker {
         else return false;
     }
     
-    private static boolean isTime(String t){
+    public static boolean isTime(String t){
         
-        int h1 = t.codePointAt(0) - 48;
-        int h2 = t.codePointAt(1) - 48;
+        int h1 = Character.getNumericValue(t.charAt(0));
+        int h2 = Character.getNumericValue(t.codePointAt(1));
         char h = t.charAt(2);
-        int m1 = t.codePointAt(3) - 48;
-        int m2 = t.codePointAt(4) - 48;
+        int m1 = Character.getNumericValue(t.codePointAt(3));
+        int m2 = Character.getNumericValue(t.codePointAt(4));
         if (h != ':'){
             return false;
         }

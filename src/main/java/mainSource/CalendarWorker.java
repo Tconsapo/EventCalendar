@@ -211,5 +211,5 @@ public class CalendarWorker {
     public void dateClk(java.awt.event.ActionEvent evt, MainFrame frame){
         JButton b = (JButton) evt.getSource();
         new EventsFrame(DataWorker.getDir(frame, b));
-    } 
+    }
 }

@@ -1318,9 +1318,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel1.add(yearLab);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridwidth = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.LINE_END;
         jLayeredPane1.add(jPanel1, gridBagConstraints);
 

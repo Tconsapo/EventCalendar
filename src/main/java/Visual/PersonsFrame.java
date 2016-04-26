@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JList;
+import mainSource.DataWorker;
 
 public class PersonsFrame extends javax.swing.JFrame {
 
@@ -27,7 +28,8 @@ public class PersonsFrame extends javax.swing.JFrame {
     }
     //обновление класа
     public void reset() throws IOException{
-        Converter.toJSON(e);
+        //Converter.toJSON(e);
+        e = Converter.toJavaObject(e.path);
         ArrayList<String> p = e.getPersons();
         if (!p.isEmpty()){
             String[] s = p.toArray(new String[p.size()]);
@@ -389,6 +391,7 @@ public class PersonsFrame extends javax.swing.JFrame {
         try {
             this.reset();
         } catch (IOException ex) {
+            this.dispose();
             new Error("Ошибка чтения");
         }
     }//GEN-LAST:event_formWindowGainedFocus
@@ -405,9 +408,9 @@ public class PersonsFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void reNameDialogComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_reNameDialogComponentShown
-        this.reNameText.setText("Введите имя");
+        this.reNameText.setText(this.e.eventName);
         this.reNameText.setSelectionStart(0);
-        this.reNameText.setSelectionEnd(20);
+        this.reNameText.setSelectionEnd(this.e.eventName.length());
         this.reNameText.grabFocus();
     }//GEN-LAST:event_reNameDialogComponentShown
 
@@ -450,8 +453,13 @@ public class PersonsFrame extends javax.swing.JFrame {
         try {
             SimpleDateFormat f = new SimpleDateFormat("HH:mm");
             Date t = f.parse(this.reTimeText.getText());
-            this.e.reTime(t);
-            this.reTimeDialog.setVisible(false);
+            if (DataWorker.isTime(this.reTimeText.getText())){
+                this.e.reTime(t);
+                this.reTimeDialog.setVisible(false);
+            }
+            else{
+                new Error("Неверный формат времени!");
+            }
         } catch (ParseException ex) {
             new Error("Неверный формат времени!");
         } catch (IOException ex) {
@@ -478,6 +486,7 @@ public class PersonsFrame extends javax.swing.JFrame {
         String name = this.personsList.getSelectedValue();
         this.e.delPerson(name);
         try {
+            Converter.toJSON(e);
             this.reset();
         } catch (IOException ex) {
             new Error("Ошибка чтения/записи файла!");
