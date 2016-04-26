@@ -3,8 +3,6 @@ package Visual;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import mainSource.DataWorker;
 
 public class EventsFrame extends javax.swing.JFrame {
