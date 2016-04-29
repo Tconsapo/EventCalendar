@@ -14,8 +14,6 @@ public class EventsFrame extends javax.swing.JFrame {
         initComponents();
         this.dir = d;
         this.eventsListData = new ArrayList<String>();
-        //DataWorker.getEvents(this.eventsListData, dir);
-        //DataWorker.setEvents(this.eventsList, this.eventsListData);
         this.setVisible(true);
     }
 
