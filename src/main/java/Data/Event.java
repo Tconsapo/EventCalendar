@@ -3,7 +3,9 @@ package Data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,10 +70,16 @@ public class Event {
     }   
     //изменение имени события
     public void reName(String name) throws IOException{
-        Event e = new Event(this);
-        e.eventName = name;
         SimpleDateFormat out = new SimpleDateFormat("HH_mm");
-        e.path = e.dir + "/" + e.eventName + "_" + out.format(e.time);
+        Event e = new Event(this);
+        File np = new File(new File(".").getAbsolutePath() + "/oldPaths/" + e.eventName + "_" + out.format(e.time));
+        np.createNewFile();
+        OutputStreamWriter outf = 
+		new OutputStreamWriter( new FileOutputStream(np.getAbsolutePath()),"KOI8-R");
+        e.eventName = name;
+        e.path = e.dir + "/" + e.eventName + "_" + out.format(e.time);        
+        outf.write(e.path);
+        outf.close();
         Converter.toJSON(e);
         delete(this);
         this.reOpen(Converter.toJavaObject(e.path));
@@ -79,9 +87,15 @@ public class Event {
     //изменение времени события
     public void reTime(Date t) throws IOException{
         Event e = new Event(this);
-        e.time = t;
         SimpleDateFormat out = new SimpleDateFormat("HH_mm");
+        File np = new File(new File(".").getAbsolutePath() + "/oldPaths/" + e.eventName + "_" + out.format(e.time));
+        np.createNewFile();
+        OutputStreamWriter outf = 
+		new OutputStreamWriter( new FileOutputStream(np.getAbsolutePath()),"KOI8-R");
+        e.time = t;
         e.path = e.dir + "/" + e.eventName + "_" + out.format(e.time);
+        outf.write(e.path);
+        outf.close();
         Converter.toJSON(e);
         delete(this);
         this.reOpen(Converter.toJavaObject(e.path));

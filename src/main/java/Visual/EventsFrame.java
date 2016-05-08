@@ -27,9 +27,8 @@ public class EventsFrame extends javax.swing.JFrame {
         eventsList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setLocationByPlatform(true);
+        setLocation(new java.awt.Point(0, 0));
         setMinimumSize(new java.awt.Dimension(350, 373));
-        setPreferredSize(new java.awt.Dimension(350, 373));
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {
                 formWindowGainedFocus(evt);
@@ -86,7 +85,9 @@ public class EventsFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newEventButtonClck(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEventButtonClck
-        new  NewEventDialog(this.dir).setVisible(true);
+        NewEventDialog ned = new  NewEventDialog(this.dir);
+        ned.setLocationRelativeTo(this);
+        ned.setVisible(true);
     }//GEN-LAST:event_newEventButtonClck
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
@@ -97,14 +98,16 @@ public class EventsFrame extends javax.swing.JFrame {
 
     private void eventsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventsListValueChanged
         String s = this.eventsList.getSelectedValue();       
+        this.eventsList.setEnabled(false);
         if (s != null){
             s = DataWorker.getEvent(s);
             this.eventsList.clearSelection();
             try {
-                new PersonsFrame(this.dir + "/" + s).setVisible(true);
-                this.eventsList.setEnabled(false);
+                PersonsFrame pf = new PersonsFrame(this.dir + "/" + s);
+                pf.setLocationRelativeTo(this);
+                pf.setVisible(true); 
             } catch (IOException ex) {
-                new Error("Ошибка чтения/записи файла!");
+                new Error("Ошибка чтения/записи файла!").setLocationRelativeTo(this);
             }
         }
     }//GEN-LAST:event_eventsListValueChanged

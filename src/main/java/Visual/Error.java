@@ -21,7 +21,6 @@ public class Error extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Неверный формат");
         setAlwaysOnTop(true);
-        setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(350, 110));
         addWindowFocusListener(new java.awt.event.WindowFocusListener() {
             public void windowGainedFocus(java.awt.event.WindowEvent evt) {

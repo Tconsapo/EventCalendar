@@ -208,9 +208,11 @@ public class CalendarWorker {
         setDates(frame);
     }
     //обработка нажатия на день календаря
+    
     public void dateClk(java.awt.event.ActionEvent evt, MainFrame frame){
         JButton b = (JButton) evt.getSource();
         if (b.getForeground() != Color.LIGHT_GRAY)
-            new EventsFrame(DataWorker.getDir(frame, b));
+           new EventsFrame(DataWorker.getDir(frame, b)).setLocationRelativeTo(frame);
+        
     }
 }

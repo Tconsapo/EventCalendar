@@ -82,6 +82,7 @@ public class DataWorker {
     
     public static boolean isTime(String t){
         
+        if (t.length() != 5) return false;
         int h1 = Character.getNumericValue(t.charAt(0));
         int h2 = Character.getNumericValue(t.codePointAt(1));
         char h = t.charAt(2);
@@ -112,7 +113,7 @@ public class DataWorker {
         return false;
     }
         
-    public static void createNew(String time, String name, String dir) 
+    public static boolean createNew(String time, String name, String dir) 
                        throws ParseException, IOException
     {
         SimpleDateFormat f = new SimpleDateFormat("HH:mm");
@@ -122,8 +123,28 @@ public class DataWorker {
         }
         f = new SimpleDateFormat("HH_mm");
         String path = dir + "/" + name + "_" + f.format(t);
+        File ev = new File(path);
+        if (ev.exists()){
+            return false;
+        }
         Event e = new Event(path, dir, name, t);
         Converter.toJSON(e);
+        return true;
     }
     
+    public static void delete(String time, String name, String dir) 
+                       throws ParseException, IOException
+    {
+        SimpleDateFormat f = new SimpleDateFormat("HH:mm");
+        Date t = f.parse(time);
+        if (!isTime(time)){
+           t = f.parse("ERROR");
+        }
+        f = new SimpleDateFormat("HH_mm");
+        String path = dir + "/" + name + "_" + f.format(t);
+        File ev = new File(path);
+        if (ev.exists()){
+            ev.delete();
+        }
+    }
 }

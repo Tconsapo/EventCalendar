@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Data;
 
 import static Data.Event.delete;
@@ -12,17 +7,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author PC
- */
 public class EventTest {
     
     public EventTest() {
@@ -115,8 +102,13 @@ public class EventTest {
         String time = "11_00";
         Date t = out.parse(time);
         Event e = new Event("test/json", "test", "json", t);
+        File f = new File("oldPaths");
+        f.mkdir();
         e.reName("new name");
         assertEquals(e.eventName, "new name");
+        for (File d: f.listFiles())
+            d.delete();
+        f.delete();
     }
 
     @Test
@@ -127,8 +119,13 @@ public class EventTest {
         Event e = new Event("test/json", "test", "json", t);
         String newTime = "11_46";
         Date _t = out.parse(newTime);
+        File f = new File("oldPaths");
+        f.mkdir();
         e.reTime(_t);
         assertEquals(out.format(e.time), out.format(_t));
+        for (File d: f.listFiles())
+            d.delete();
+        f.delete();
     }
 
     @Test

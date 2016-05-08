@@ -3,6 +3,8 @@ package Visual;
 
 import Data.Converter;
 import Data.Event;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +31,15 @@ public class PersonsFrame extends javax.swing.JFrame {
     //обновление класа
     public void reset() throws IOException{
         //Converter.toJSON(e);
+        File ev = new File(e.path);
+        if (!ev.exists()){
+         SimpleDateFormat out = new SimpleDateFormat("HH_mm");
+         ev = new File(new File(".").getAbsolutePath() + "/oldPaths/" + e.eventName + "_" + out.format(e.time));
+         FileInputStream inf = new FileInputStream(ev.getAbsolutePath());
+         byte[] str = new byte[inf.available()];
+         inf.read(str);
+         e.path = new String(str, "KOI8-R");
+        }
         e = Converter.toJavaObject(e.path);
         ArrayList<String> p = e.getPersons();
         if (!p.isEmpty()){
@@ -40,7 +51,7 @@ public class PersonsFrame extends javax.swing.JFrame {
         SimpleDateFormat out = new SimpleDateFormat("HH:mm");
         this.setTitle("Участники " + this.e.eventName + " " + out.format(this.e.time));
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -151,7 +162,6 @@ public class PersonsFrame extends javax.swing.JFrame {
 
         reTimeDialog.setTitle("Новое время");
         reTimeDialog.setAlwaysOnTop(true);
-        reTimeDialog.setLocationByPlatform(true);
         reTimeDialog.setMinimumSize(new java.awt.Dimension(300, 100));
         reTimeDialog.addComponentListener(new java.awt.event.ComponentAdapter() {
             public void componentShown(java.awt.event.ComponentEvent evt) {
@@ -363,17 +373,17 @@ public class PersonsFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addButtonActionPerformed
-        this.addDialog.setLocationRelativeTo(null);
+        this.addDialog.setLocationRelativeTo(this);
         this.addDialog.setVisible(true);
     }//GEN-LAST:event_addButtonActionPerformed
 
     private void reNameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reNameButtonActionPerformed
-        this.reNameDialog.setLocationRelativeTo(null);
+        this.reNameDialog.setLocationRelativeTo(this);
         this.reNameDialog.setVisible(true);
     }//GEN-LAST:event_reNameButtonActionPerformed
 
     private void reTimeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reTimeButtonActionPerformed
-        this.reTimeDialog.setLocationRelativeTo(null);
+        this.reTimeDialog.setLocationRelativeTo(this);
         this.reTimeDialog.setVisible(true);
     }//GEN-LAST:event_reTimeButtonActionPerformed
 
@@ -383,7 +393,7 @@ public class PersonsFrame extends javax.swing.JFrame {
         try {
             Converter.toJSON(e); 
         } catch (IOException ex) {
-            new Error("Ошибка чтения/записи файла");
+            new Error("Ошибка чтения/записи файла").setLocationRelativeTo(this);
         }
     }//GEN-LAST:event_addPersonActionPerformed
 
@@ -392,7 +402,7 @@ public class PersonsFrame extends javax.swing.JFrame {
             this.reset();
         } catch (IOException ex) {
             this.dispose();
-            new Error("Ошибка чтения");
+            new Error("Ошибка чтения").setLocationRelativeTo(this);
         }
     }//GEN-LAST:event_formWindowGainedFocus
 
@@ -429,7 +439,7 @@ public class PersonsFrame extends javax.swing.JFrame {
             this.setTitle("Участники " + name + " " + out.format(this.e.time));
             this.reNameDialog.setVisible(false);
         } catch (IOException ex) {
-            new Error("Ошибка чтения/записи файла!");
+            new Error("Ошибка чтения/записи файла!").setLocationRelativeTo(this);
         }
         
     }//GEN-LAST:event_setNameButtonActionPerformed
@@ -438,7 +448,7 @@ public class PersonsFrame extends javax.swing.JFrame {
         try {
             this.reset();
         } catch (IOException ex) {
-            new Error("Ошибка чтения/записи файла");
+            new Error("Ошибка чтения/записи файла").setLocationRelativeTo(this);
         }
     }//GEN-LAST:event_formFocusGained
 
@@ -458,18 +468,18 @@ public class PersonsFrame extends javax.swing.JFrame {
                 this.reTimeDialog.setVisible(false);
             }
             else{
-                new Error("Неверный формат времени!");
+                new Error("Неверный формат времени!").setLocationRelativeTo(this);
             }
         } catch (ParseException ex) {
-            new Error("Неверный формат времени!");
+            new Error("Неверный формат времени!").setLocationRelativeTo(this);
         } catch (IOException ex) {
-            new Error("Ошибка чтения/создания файла");
+            new Error("Ошибка чтения/создания файла").setLocationRelativeTo(this);
         } 
     }//GEN-LAST:event_setTimeButtonActionPerformed
 
     private void eventDelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eventDelButtonActionPerformed
         this.delEventDialog.setVisible(true);
-        this.delEventDialog.setLocationRelativeTo(null);
+        this.delEventDialog.setLocationRelativeTo(this);
     }//GEN-LAST:event_eventDelButtonActionPerformed
 
     private void delCancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delCancelButtonActionPerformed
@@ -489,7 +499,7 @@ public class PersonsFrame extends javax.swing.JFrame {
             Converter.toJSON(e);
             this.reset();
         } catch (IOException ex) {
-            new Error("Ошибка чтения/записи файла!");
+            new Error("Ошибка чтения/записи файла!").setLocationRelativeTo(this);
         }
     }//GEN-LAST:event_removeButtonActionPerformed
 

@@ -1,5 +1,6 @@
 package Visual;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JButton;
@@ -16,6 +17,8 @@ public class MainFrame extends javax.swing.JFrame {
     
     public MainFrame() {
         initComponents();
+        File np = new File(new File(".").getAbsolutePath() + "/oldPaths");
+        np.mkdir();
         a.create(this);
     }
 
@@ -108,6 +111,11 @@ public class MainFrame extends javax.swing.JFrame {
                 formWindowGainedFocus(evt);
             }
             public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -1364,6 +1372,13 @@ public class MainFrame extends javax.swing.JFrame {
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         a.setDates(this);
     }//GEN-LAST:event_formWindowGainedFocus
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        File cf = new File("oldPaths");
+        for (File f: cf.listFiles())
+            f.delete();
+        cf.delete();
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton jButton1;
