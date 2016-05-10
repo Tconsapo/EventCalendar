@@ -70,35 +70,43 @@ public class Event {
     }   
     //изменение имени события
     public void reName(String name) throws IOException{
-        SimpleDateFormat out = new SimpleDateFormat("HH_mm");
         Event e = new Event(this);
-        File np = new File(new File(".").getAbsolutePath() + "/oldPaths/" + e.eventName + "_" + out.format(e.time));
-        np.createNewFile();
-        OutputStreamWriter outf = 
-		new OutputStreamWriter( new FileOutputStream(np.getAbsolutePath()),"KOI8-R");
-        e.eventName = name;
-        e.path = e.dir + "/" + e.eventName + "_" + out.format(e.time);        
-        outf.write(e.path);
-        outf.close();
-        Converter.toJSON(e);
-        delete(this);
-        this.reOpen(Converter.toJavaObject(e.path));
+        if (!e.eventName.equals(name)){
+            SimpleDateFormat out = new SimpleDateFormat("HH_mm");
+            String s = e.path;
+            s = s.replaceAll("/", "_");
+            File np = new File(new File(".").getAbsolutePath() + "/oldPaths/" + s);
+            np.createNewFile();
+            OutputStreamWriter outf = 
+                    new OutputStreamWriter( new FileOutputStream(np.getAbsolutePath()),"KOI8-R");
+            e.eventName = name;
+            e.path = e.dir + "/" + e.eventName + "_" + out.format(e.time);        
+            outf.write(e.path);
+            outf.close();
+            Converter.toJSON(e);
+            delete(this);
+            this.reOpen(Converter.toJavaObject(e.path));
+        }
     }
     //изменение времени события
     public void reTime(Date t) throws IOException{
         Event e = new Event(this);
-        SimpleDateFormat out = new SimpleDateFormat("HH_mm");
-        File np = new File(new File(".").getAbsolutePath() + "/oldPaths/" + e.eventName + "_" + out.format(e.time));
-        np.createNewFile();
-        OutputStreamWriter outf = 
-		new OutputStreamWriter( new FileOutputStream(np.getAbsolutePath()),"KOI8-R");
-        e.time = t;
-        e.path = e.dir + "/" + e.eventName + "_" + out.format(e.time);
-        outf.write(e.path);
-        outf.close();
-        Converter.toJSON(e);
-        delete(this);
-        this.reOpen(Converter.toJavaObject(e.path));
+        if (!e.time.equals(t)){
+            SimpleDateFormat out = new SimpleDateFormat("HH_mm");
+            String s = e.path;
+            s = s.replaceAll("/", "_");
+            File np = new File(new File(".").getAbsolutePath() + "/oldPaths/" + s);
+            np.createNewFile();
+            OutputStreamWriter outf = 
+                    new OutputStreamWriter( new FileOutputStream(np.getAbsolutePath()),"KOI8-R");
+            e.time = t;
+            e.path = e.dir + "/" + e.eventName + "_" + out.format(e.time);
+            outf.write(e.path);
+            outf.close();
+            Converter.toJSON(e);
+            delete(this);
+            this.reOpen(Converter.toJavaObject(e.path));
+        }
     }
     //удаление файла
     public static void delete(Event e){

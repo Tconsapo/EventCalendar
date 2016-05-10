@@ -30,15 +30,18 @@ public class PersonsFrame extends javax.swing.JFrame {
     }
     //обновление класа
     public void reset() throws IOException{
-        //Converter.toJSON(e);
         File ev = new File(e.path);
-        if (!ev.exists()){
-         SimpleDateFormat out = new SimpleDateFormat("HH_mm");
-         ev = new File(new File(".").getAbsolutePath() + "/oldPaths/" + e.eventName + "_" + out.format(e.time));
-         FileInputStream inf = new FileInputStream(ev.getAbsolutePath());
-         byte[] str = new byte[inf.available()];
-         inf.read(str);
-         e.path = new String(str, "KOI8-R");
+        String pt;
+        while (!ev.exists()){
+            pt = e.path;
+            pt = pt.replaceAll("/", "_");
+            SimpleDateFormat out = new SimpleDateFormat("HH_mm");
+            ev = new File(new File(".").getAbsolutePath() + "/oldPaths/" + pt);
+            FileInputStream inf = new FileInputStream(ev.getAbsolutePath());
+            byte[] str = new byte[inf.available()];
+            inf.read(str);
+            e.path = new String(str, "KOI8-R");
+            ev = new File(e.path);
         }
         e = Converter.toJavaObject(e.path);
         ArrayList<String> p = e.getPersons();
