@@ -3,6 +3,8 @@ package Visual;
 
 import Data.Converter;
 import Data.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -10,13 +12,27 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JList;
+import javax.swing.Timer;
 import mainSource.DataWorker;
 
-public class PersonsFrame extends javax.swing.JFrame {
+public class PersonsFrame extends javax.swing.JFrame implements ActionListener {
 
     private Event e;
+    private Timer timer;
     
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        try {
+            if (!this.isFocused())
+                this.reset();
+        } catch (IOException ex) {
+            Logger.getLogger(PersonsFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     //конструктор класса
     public PersonsFrame(String path) throws IOException {  
         e = Converter.toJavaObject(path);
@@ -27,20 +43,25 @@ public class PersonsFrame extends javax.swing.JFrame {
             this.personsList.setListData(s);
         }
         initComponents();
+        Timer resetTimer = new Timer(750, this);
+        resetTimer.start();
     }
     //обновление класа
     public void reset() throws IOException{
         File ev = new File(e.path);
         String pt;
         while (!ev.exists()){
+            if (e.path.equals("deleted")) {
+                this.dispose();
+                return;    
+            }
             pt = e.path;
             pt = pt.replaceAll("/", "_");
-            SimpleDateFormat out = new SimpleDateFormat("HH_mm");
-            ev = new File(new File(".").getAbsolutePath() + "/oldPaths/" + pt);
+            ev = new File(new File("").getAbsolutePath() + "/oldPaths/" + pt);
             FileInputStream inf = new FileInputStream(ev.getAbsolutePath());
             byte[] str = new byte[inf.available()];
             inf.read(str);
-            e.path = new String(str, "KOI8-R");
+            e.path = new String(str, "KOI8-R");  
             ev = new File(e.path);
         }
         e = Converter.toJavaObject(e.path);
@@ -491,7 +512,11 @@ public class PersonsFrame extends javax.swing.JFrame {
 
     private void delOkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delOkButtonActionPerformed
         this.dispose();
-        Event.delete(this.e);
+        try {
+            Event.delete(this.e);
+        } catch (IOException ex) {
+            Logger.getLogger(PersonsFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.delEventDialog.setVisible(false);
     }//GEN-LAST:event_delOkButtonActionPerformed
 

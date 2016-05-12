@@ -72,6 +72,7 @@ public class Event {
     public void reName(String name) throws IOException{
         Event e = new Event(this);
         if (!e.eventName.equals(name)){
+            delete(this);
             SimpleDateFormat out = new SimpleDateFormat("HH_mm");
             String s = e.path;
             s = s.replaceAll("/", "_");
@@ -84,7 +85,6 @@ public class Event {
             outf.write(e.path);
             outf.close();
             Converter.toJSON(e);
-            delete(this);
             this.reOpen(Converter.toJavaObject(e.path));
         }
     }
@@ -92,6 +92,7 @@ public class Event {
     public void reTime(Date t) throws IOException{
         Event e = new Event(this);
         if (!e.time.equals(t)){
+            delete(this);
             SimpleDateFormat out = new SimpleDateFormat("HH_mm");
             String s = e.path;
             s = s.replaceAll("/", "_");
@@ -104,12 +105,19 @@ public class Event {
             outf.write(e.path);
             outf.close();
             Converter.toJSON(e);
-            delete(this);
             this.reOpen(Converter.toJavaObject(e.path));
         }
     }
     //удаление файла
-    public static void delete(Event e){
+    public static void delete(Event e) throws IOException{
+        String s = e.path;
+        s = s.replaceAll("/", "_");
+        File np = new File(new File(".").getAbsolutePath() + "/oldPaths/" + s);
+        np.createNewFile();
+        OutputStreamWriter outf = 
+              new OutputStreamWriter( new FileOutputStream(np.getAbsolutePath()),"KOI8-R");
+        outf.write("deleted");
+        outf.close();
         File f = new File(e.path);
         f.delete();
     }

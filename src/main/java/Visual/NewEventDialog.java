@@ -162,13 +162,13 @@ public class NewEventDialog extends javax.swing.JFrame {
             if (!DataWorker.createNew(time, name, dir)){
                 this.eventExistDialog.setLocationRelativeTo(this);
                 this.eventExistDialog.setVisible(true);
-            }
+            } else this.dispose();
         } catch (ParseException ex) {
             new Error("Неверный формат времени!").setLocationRelativeTo(this);
         } catch (IOException ex) {
             new Error("Ошибка чтения/записи файла!").setLocationRelativeTo(this);
         }
-        this.dispose();
+        //this.dispose();
     }//GEN-LAST:event_createNewClck
 
     private void replace(){

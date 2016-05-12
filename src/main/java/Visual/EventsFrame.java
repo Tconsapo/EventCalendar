@@ -1,8 +1,13 @@
 //Класс отображение событий
 package Visual;
 
+import java.awt.Window;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import mainSource.DataWorker;
 
 public class EventsFrame extends javax.swing.JFrame {
@@ -94,6 +99,17 @@ public class EventsFrame extends javax.swing.JFrame {
         DataWorker.getEvents(this.eventsListData, dir);
         DataWorker.setEvents(this.eventsList, this.eventsListData);
         this.eventsList.setEnabled(true);
+//        Window[] w = this.getOwnedWindows();
+//        for (Window x : w){
+//            Class<PersonsFrame> pf = (Class<PersonsFrame>) x.getClass();
+//            try {
+//                Method m = pf.getMethod("reset", (Class<PersonsFrame>) null);
+//                m.invoke(null, (Object) null);
+//            } catch (NoSuchMethodException | SecurityException | IllegalAccessException 
+//                    | IllegalArgumentException | InvocationTargetException ex) {
+//                Logger.getLogger(EventsFrame.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void eventsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventsListValueChanged
@@ -105,7 +121,7 @@ public class EventsFrame extends javax.swing.JFrame {
             try {
                 PersonsFrame pf = new PersonsFrame(this.dir + "/" + s);
                 pf.setLocationRelativeTo(this);
-                pf.setVisible(true); 
+                pf.setVisible(true);
             } catch (IOException ex) {
                 new Error("Ошибка чтения/записи файла!").setLocationRelativeTo(this);
             }
