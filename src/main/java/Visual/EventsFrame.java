@@ -1,25 +1,28 @@
 //Класс отображение событий
 package Visual;
 
-import java.awt.Window;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import mainSource.CalendarWorker;
 import mainSource.DataWorker;
 
 public class EventsFrame extends javax.swing.JFrame {
     
     private String dir;
     private ArrayList eventsListData;
+    private CalendarWorker parent;
+    public boolean canCreateEventDialog = true;
+    public boolean canCreatePesonsFrame = true;
     
     public EventsFrame(String d) {
         initComponents();
         this.dir = d;
         this.eventsListData = new ArrayList<String>();
         this.setVisible(true);
+    }
+    
+    public void setParent(CalendarWorker cw){
+        this.parent = cw;
     }
 
     @SuppressWarnings("unchecked")
@@ -42,6 +45,9 @@ public class EventsFrame extends javax.swing.JFrame {
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -90,26 +96,19 @@ public class EventsFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void newEventButtonClck(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newEventButtonClck
-        NewEventDialog ned = new  NewEventDialog(this.dir);
-        ned.setLocationRelativeTo(this);
-        ned.setVisible(true);
+        if (canCreateEventDialog){
+            canCreateEventDialog = false;
+            NewEventDialog ned = new  NewEventDialog(this.dir);
+            ned.setParent(this);
+            ned.setLocationRelativeTo(this);
+            ned.setVisible(true);
+        }
     }//GEN-LAST:event_newEventButtonClck
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
         DataWorker.getEvents(this.eventsListData, dir);
         DataWorker.setEvents(this.eventsList, this.eventsListData);
         this.eventsList.setEnabled(true);
-//        Window[] w = this.getOwnedWindows();
-//        for (Window x : w){
-//            Class<PersonsFrame> pf = (Class<PersonsFrame>) x.getClass();
-//            try {
-//                Method m = pf.getMethod("reset", (Class<PersonsFrame>) null);
-//                m.invoke(null, (Object) null);
-//            } catch (NoSuchMethodException | SecurityException | IllegalAccessException 
-//                    | IllegalArgumentException | InvocationTargetException ex) {
-//                Logger.getLogger(EventsFrame.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//        }
     }//GEN-LAST:event_formWindowGainedFocus
 
     private void eventsListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_eventsListValueChanged
@@ -119,9 +118,13 @@ public class EventsFrame extends javax.swing.JFrame {
             s = DataWorker.getEvent(s);
             this.eventsList.clearSelection();
             try {
-                PersonsFrame pf = new PersonsFrame(this.dir + "/" + s);
-                pf.setLocationRelativeTo(this);
-                pf.setVisible(true);
+                    if (this.canCreatePesonsFrame){
+                    PersonsFrame pf = new PersonsFrame(this.dir + "/" + s);
+                    pf.setParent(this);
+                    this.canCreatePesonsFrame = false;
+                    pf.setLocationRelativeTo(this);
+                    pf.setVisible(true);
+                }
             } catch (IOException ex) {
                 new Error("Ошибка чтения/записи файла!").setLocationRelativeTo(this);
             }
@@ -131,6 +134,10 @@ public class EventsFrame extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         this.setTitle("События " + DataWorker.getName(this.dir));
     }//GEN-LAST:event_formWindowOpened
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.parent.canCreateEventsFrame = true;
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton eventCreateButton;

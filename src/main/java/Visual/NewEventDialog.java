@@ -8,11 +8,16 @@ import mainSource.DataWorker;
 public class NewEventDialog extends javax.swing.JFrame {
     
     private String dir;
+    private EventsFrame parent;
     
     //конструктор
     public NewEventDialog(String d) {
         initComponents();
         this.dir = d;
+    }
+    
+    public void setParent(EventsFrame ef){
+        this.parent = ef;
     }
 
     @SuppressWarnings("unchecked")
@@ -32,9 +37,7 @@ public class NewEventDialog extends javax.swing.JFrame {
         filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
 
         eventExistDialog.setTitle("Заменить событие?");
-        eventExistDialog.setMaximumSize(new java.awt.Dimension(346, 100));
         eventExistDialog.setMinimumSize(new java.awt.Dimension(346, 100));
-        eventExistDialog.setPreferredSize(new java.awt.Dimension(346, 100));
         eventExistDialog.setResizable(false);
         eventExistDialog.getContentPane().setLayout(new java.awt.GridBagLayout());
 
@@ -87,6 +90,11 @@ public class NewEventDialog extends javax.swing.JFrame {
         setTitle("Создание нового события");
         setLocationByPlatform(true);
         setMinimumSize(new java.awt.Dimension(300, 150));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
         getContentPane().setLayout(new java.awt.GridBagLayout());
 
         timeField.setText("hh:mm");
@@ -162,7 +170,10 @@ public class NewEventDialog extends javax.swing.JFrame {
             if (!DataWorker.createNew(time, name, dir)){
                 this.eventExistDialog.setLocationRelativeTo(this);
                 this.eventExistDialog.setVisible(true);
-            } else this.dispose();
+            } else {
+                parent.canCreateEventDialog = true;
+                this.dispose();
+            }
         } catch (ParseException ex) {
             new Error("Неверный формат времени!").setLocationRelativeTo(this);
         } catch (IOException ex) {
@@ -186,12 +197,18 @@ public class NewEventDialog extends javax.swing.JFrame {
     
     private void replaceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replaceButtonActionPerformed
        this.replace();
+       parent.canCreateEventDialog = true;
        this.eventExistDialog.setVisible(false);
+       this.dispose();
     }//GEN-LAST:event_replaceButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
         this.eventExistDialog.setVisible(false);
     }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.parent.canCreateEventDialog = true;
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;

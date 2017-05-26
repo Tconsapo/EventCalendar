@@ -113,6 +113,7 @@ public class Event {
         String s = e.path;
         s = s.replaceAll("/", "_");
         File np = new File(new File(".").getAbsolutePath() + "/oldPaths/" + s);
+        np.getParentFile().mkdir();
         np.createNewFile();
         OutputStreamWriter outf = 
               new OutputStreamWriter( new FileOutputStream(np.getAbsolutePath()),"KOI8-R");

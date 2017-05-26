@@ -22,6 +22,7 @@ public class PersonsFrame extends javax.swing.JFrame implements ActionListener {
 
     private Event e;
     private Timer timer;
+    private EventsFrame parent;
     
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -31,6 +32,10 @@ public class PersonsFrame extends javax.swing.JFrame implements ActionListener {
         } catch (IOException ex) {
             Logger.getLogger(PersonsFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void setParent(EventsFrame ef){
+        this.parent = ef;
     }
 
     //конструктор класса
@@ -286,6 +291,9 @@ public class PersonsFrame extends javax.swing.JFrame implements ActionListener {
             }
         });
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
@@ -530,6 +538,10 @@ public class PersonsFrame extends javax.swing.JFrame implements ActionListener {
             new Error("Ошибка чтения/записи файла!").setLocationRelativeTo(this);
         }
     }//GEN-LAST:event_removeButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.parent.canCreatePesonsFrame = true;
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addButton;

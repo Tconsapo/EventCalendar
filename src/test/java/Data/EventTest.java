@@ -113,6 +113,7 @@ public class EventTest {
 
     @Test
     public void testReTime() throws Exception {
+        System.out.println("reTime");
         SimpleDateFormat out = new SimpleDateFormat("HH_mm");
         String time = "11_00";
         Date t = out.parse(time);
@@ -132,7 +133,7 @@ public class EventTest {
     public void testDelete() throws ParseException, IOException {
         System.out.println("delete");
         SimpleDateFormat out = new SimpleDateFormat("HH_mm");
-        String time = "11_00";
+        String time = "11_46";
         Date t = out.parse(time);
         Event e = new Event("test/json", "test", "json", t);
         Converter.toJSON(e);

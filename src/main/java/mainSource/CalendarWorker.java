@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 import javax.swing.JButton;
 
 public class CalendarWorker {
+    
+    public boolean canCreateEventsFrame = true;
  
     //добавление всех дней в список
     private void addButtons(MainFrame frame){
@@ -207,12 +209,17 @@ public class CalendarWorker {
         //выставление отображения дней в месяцах
         setDates(frame);
     }
-    //обработка нажатия на день календаря
-    
+    //обработка нажатия на день календаря  
     public void dateClk(java.awt.event.ActionEvent evt, MainFrame frame){
-        JButton b = (JButton) evt.getSource();
-        if (b.getForeground() != Color.LIGHT_GRAY)
-           new EventsFrame(DataWorker.getDir(frame, b)).setLocationRelativeTo(frame);
-        
+        if (canCreateEventsFrame){
+            JButton b = (JButton) evt.getSource();
+            if (b.getForeground() != Color.LIGHT_GRAY){
+                this.canCreateEventsFrame = false;
+                EventsFrame ef;
+                ef = new EventsFrame(DataWorker.getDir(frame, b));
+                ef.setLocationRelativeTo(frame);
+                ef.setParent(this);
+            }
+        }
     }
 }
